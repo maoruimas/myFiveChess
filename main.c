@@ -38,13 +38,13 @@ int setGame(char board[][BOARD_SIZE])
 	if(i==1)
 	{
 		comMove.role=COMPUTER_ROLE=BLACK;
-		HUMAN_ROLE=WHITE;
+		humMove.role=HUMAN_ROLE=WHITE;
 		comMove.x=comMove.y=BOARD_SIZE/2;
 		makeMove(board,comMove);
 	}else
 	{
 		COMPUTER_ROLE=WHITE;
-		HUMAN_ROLE=BLACK;
+		humMove.role=HUMAN_ROLE=BLACK;
 	}
 	printf("Forbidden move on? (y/n) ");
 	while(~scanf("%s",command)&&tolower(command[0])!='y'&&tolower(command[0])!='n')printf("E: no such command.\n");
@@ -63,26 +63,23 @@ int setGame(char board[][BOARD_SIZE])
 			{
 				unmakeMove(board,moveHistory.sta[--moveHistory.top]);
 				unmakeMove(board,moveHistory.sta[--moveHistory.top]);
+				break;
 			}
 			else if(strcmp(command,"yield")==0)return COMPUTER_ROLE;
 			else if(command[0]>='a'&&command[0]<'a'+BOARD_SIZE)
 			{
-				j=command[0]-'a';
+				humMove.y=command[0]-'a';
 				if(strlen(command)>1)sscanf(command,"%*c%d",&i);
 				else scanf("%d",&i);
-				i=BOARD_SIZE-i;
-				if(i>=0&&i<BOARD_SIZE)
+				humMove.x=BOARD_SIZE-i;
+				if(isLegal(board,humMove))
 				{
-					humMove.x=i,humMove.y=j,humMove.role=HUMAN_ROLE;
-					if(isLegal(board,humMove))
-					{
-						printf("Your move: %c %d\n",'A'+j,BOARD_SIZE-i);//...
-						makeMove(board,humMove);
-						moveHistory.sta[moveHistory.top++]=humMove;
-						isHumanMove=true;
-						printBoard(board);
-						break;
-					}
+					printf("Your move: %c %d\n",'A'+j,BOARD_SIZE-i);//...
+					makeMove(board,humMove);
+					moveHistory.sta[moveHistory.top++]=humMove;
+					isHumanMove=true;
+					printBoard(board);
+					break;
 				}
 			}
 			printf("E: no such command or cannot regret or illegal move.\n");
