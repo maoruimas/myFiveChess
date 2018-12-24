@@ -78,7 +78,8 @@ int evaLine(char board[][BOARD_SIZE],int x,int y,int type,int role)
 	if(role==WHITE)revRole(tp);
 	ret+=acSearch(tp);
 	revRole(tp);
-	ret-=acSearch(tp);
+	int tmp=acSearch(tp);
+	ret-=tmp;
 	return ret;
 }
 int evaPoint(char board[][BOARD_SIZE],int x,int y,int role)
@@ -96,6 +97,7 @@ int evaBoard(char board[][BOARD_SIZE],int role)
 		for(j=2;j<5;++j)
 			ret+=evaLine(board,0,i,j,role);
 		ret+=evaLine(board,i,0,1,role);
+		if(i==0)continue;
 		ret+=evaLine(board,i,0,4,role);
 		ret+=evaLine(board,i,BOARD_SIZE-1,3,role);
 	}
