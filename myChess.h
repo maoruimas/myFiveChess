@@ -26,7 +26,7 @@ struct moveStack
 //evaluator
 void evaInit();
 void revRole(char[]);
-int evaLine(char[],int);
+int evaLine(char[][BOARD_SIZE],int,int,int,int);
 int evaPoint(char[][BOARD_SIZE],int,int,int);
 int evaBoard(char[][BOARD_SIZE],int);
 //engine
