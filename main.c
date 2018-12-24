@@ -1,13 +1,24 @@
 #include"myChess.h"
 void testEva(char[][BOARD_SIZE]);
+void getBoard(char board[][BOARD_SIZE]);
+void getBoard(char board[][BOARD_SIZE])
+{
+	FILE *fp;
+	fp=fopen("in.txt","r");
+	int i;
+	for(i=0;i<BOARD_SIZE;++i)
+		fscanf(fp,"%s",board[i]);
+	fclose(fp);
+}
 void testEva(char board[][BOARD_SIZE])
 {
 	int i;
 	char j,role;
 	char input[10];
-	for(i=0;i<BOARD_SIZE;++i)
-		for(j=0;j<BOARD_SIZE;++j)
-			board[i][j]=EMPTY;
+	getBoard(board);
+	printBoard(board);
+	struct Move comMove=getNextMove(board,BLACK);
+	printf("com move at %c %d\n",'A'+comMove.y,15-comMove.x);
 	while(1)
 	{
 		printBoard(board);
@@ -27,10 +38,14 @@ int setGame(char board[][BOARD_SIZE])
 	struct Move humMove,comMove;
 	char command[20];
 	bool isHumanMove;
+	FILE *fp;
 	//init
+	/*
 	for(i=0;i<BOARD_SIZE;++i)
 		for(j=0;j<BOARD_SIZE;++j)
 			board[i][j]=EMPTY;
+			*/
+	getBoard(board);
 	moveHistory.top=0;
 	//settings
 	printf("1. computer first\n2. human first\n");
@@ -66,6 +81,17 @@ int setGame(char board[][BOARD_SIZE])
 				break;
 			}
 			else if(strcmp(command,"yield")==0)return COMPUTER_ROLE;
+			else if(strcmp(command,"save")==0)
+			{
+				fp=fopen("in.txt","w");
+				for(i=0;i<BOARD_SIZE;++i)
+				{
+					for(j=0;j<BOARD_SIZE;++j)
+						fprintf(fp,"%c",board[i][j]);
+					fprintf(fp, "\n");
+				}
+				fclose(fp);
+			}
 			else if(command[0]>='a'&&command[0]<'a'+BOARD_SIZE)
 			{
 				humMove.y=command[0]-'a';
@@ -96,7 +122,6 @@ int setGame(char board[][BOARD_SIZE])
 }
 int main()
 {
-	//freopen("in.txt","r",stdin);
 	char board[BOARD_SIZE][BOARD_SIZE];
 	char command[20];
 	int winner;

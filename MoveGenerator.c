@@ -4,7 +4,9 @@ int maxI,minI,maxJ,minJ;
 int cntMove[2][BOARD_SIZE];
 void movInit()
 {
-    maxI=maxJ=minI=minJ=BOARD_SIZE/2;
+    //maxI=maxJ=minI=minJ=BOARD_SIZE/2;
+    minI=minJ=0;
+    maxI=maxJ=BOARD_SIZE-1;
     memset(cntMove[0],0,sizeof cntMove[0]);
     memset(cntMove[1],0,sizeof cntMove[1]);
 }

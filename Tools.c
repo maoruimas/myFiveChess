@@ -144,9 +144,13 @@ int acSearch(char s[])
 		while(i)
 		{
 			//printf("i:%d\n",i);
-			if(trieVal[i]!=-1)ret+=trieVal[i];
+			if(trieVal[i]!=-1){
+				ret+=trieVal[i];
+				//printf("ret=%d\n",ret);
+			}
 			i=fail[i];
 		}
 	}
+	//printf("return ret=%d\n",ret);
 	return ret;
 }

@@ -1,5 +1,5 @@
 #include"myChess.h"
-#define MAX_REF_TIME 1000000
+#define MAX_REF_TIME 1000
 struct Move nextMove;
 int DEPTH;
 struct Move getNextMove(char board[][BOARD_SIZE],int role)
@@ -12,10 +12,10 @@ struct Move getNextMove(char board[][BOARD_SIZE],int role)
         cntTime=clock();
         alphaBeta(board,DEPTH,-INF,INF,role);
         endTime=clock();
-        printf("Total: %dms\n",(endTime-cntTime)/1000);
+        printf("Total: %dms\n",(endTime-cntTime));
         if(endTime-begTime>=MAX_REF_TIME)
         {
-            printf("Time is out. %d leyer(s) searched. %dms used totally.\n",DEPTH,(endTime-begTime)/1000);
+            printf("Time is out. %d leyer(s) searched. %dms used totally.\n",DEPTH,(endTime-begTime));
             break;
         }
     }
