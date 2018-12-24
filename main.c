@@ -20,6 +20,7 @@ void testEva(char board[][BOARD_SIZE])
 		printf("score=%d\n",evaBoard(board,BLACK));
 	}
 }
+struct moveStack moveHistory;
 int setGame(char board[][BOARD_SIZE])
 {
 	int i,j;
@@ -30,6 +31,7 @@ int setGame(char board[][BOARD_SIZE])
 	for(i=0;i<BOARD_SIZE;++i)
 		for(j=0;j<BOARD_SIZE;++j)
 			board[i][j]=EMPTY;
+	moveHistory.top=0;
 	//settings
 	printf("1. computer first\n2. human first\n");
 	while(~scanf("%d",&i)&&i!=1&&i!=2)printf("E: no such command.\n");
@@ -57,9 +59,10 @@ int setGame(char board[][BOARD_SIZE])
 		while(~scanf("%s",command))
 		{
 			command[0]=tolower(command[0]);
-			if(strcmp(command,"regret")==0)
+			if(strcmp(command,"regret")==0&&moveHistory.top>1)
 			{
-				//
+				unmakeMove(board,moveHistory.sta[--moveHistory.top]);
+				unmakeMove(board,moveHistory.sta[--moveHistory.top]);
 			}
 			else if(strcmp(command,"yield")==0)return COMPUTER_ROLE;
 			else if(command[0]>='a'&&command[0]<'a'+BOARD_SIZE)
@@ -75,19 +78,21 @@ int setGame(char board[][BOARD_SIZE])
 					{
 						printf("Your move: %c %d\n",'A'+j,BOARD_SIZE-i);//...
 						makeMove(board,humMove);
+						moveHistory.sta[moveHistory.top++]=humMove;
 						isHumanMove=true;
 						printBoard(board);
 						break;
 					}
 				}
 			}
-			printf("E: no such command or illegal move.\n");
+			printf("E: no such command or cannot regret or illegal move.\n");
 		}
 		if(isHumanMove)
 		{
 			if(evaBoard(board,HUMAN_ROLE)>25000)return HUMAN_ROLE;
 			comMove=getNextMove(board,COMPUTER_ROLE);
 			makeMove(board,comMove);
+			moveHistory.sta[moveHistory.top++]=comMove;
 		}
 	}
 	return 0;
